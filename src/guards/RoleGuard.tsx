@@ -1,11 +1,17 @@
-import { Outlet } from 'react-router-dom'
-import type { Role } from '../routes/dashboardRoutes'
+import { Navigate, Outlet } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
+import type { UserRole } from '../types/auth'
 
 type RoleGuardProps = {
-  allowedRoles: Role[]
+  allowedRoles: UserRole[]
 }
 
-// TODO: check user role against allowedRoles, redirect if unauthorized
-export function RoleGuard({ allowedRoles: _allowedRoles }: RoleGuardProps) {
+export const RoleGuard = ({ allowedRoles }: RoleGuardProps) => {
+  const { user } = useAuth()
+
+  if (!user || !allowedRoles.includes(user.role)) {
+    return <Navigate to="/" replace />
+  }
+
   return <Outlet />
 }

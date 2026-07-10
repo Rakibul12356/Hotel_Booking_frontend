@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
+    "dev": "node init && vite",
+    "build": "node init && tsc && vite build",
     "preview": "vite preview"
   },
   "devDependencies": {
@@ -19,7 +19,10 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.101.2",
+    "axios": "^1.18.1",
     "date-fns": "^4.4.0",
+    "dotenv": "^8.2.0",
+    "node-fetch": "^3.3.2",
     "react": "^19.2.7",
     "react-datepicker": "^9.1.0",
     "react-dom": "^19.2.7",

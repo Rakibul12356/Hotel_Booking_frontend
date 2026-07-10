@@ -1,7 +1,8 @@
 import type { ReactElement } from 'react'
+import { DashboardHome } from '../pages/dashboard/DashboardHome'
+import type { UserRole } from '../types/auth'
 
-// TODO: replace with your actual role type
-export type Role = string
+export type Role = UserRole
 
 export type RouteItem = {
   path: string
@@ -13,6 +14,9 @@ export type RoleRouteGroup = {
   routes: RouteItem[]
 }
 
-// Add your dashboard pages here, e.g.:
-// { roles: ['admin'], routes: [{ path: 'users', element: <UsersPage /> }] }
-export const dashboardRoutes: RoleRouteGroup[] = []
+export const dashboardRoutes: RoleRouteGroup[] = [
+  {
+    roles: ['admin', 'user'],
+    routes: [{ path: '', element: <DashboardHome /> }],
+  },
+]
