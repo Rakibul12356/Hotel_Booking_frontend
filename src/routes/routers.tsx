@@ -6,7 +6,7 @@ import { DashboardLayout } from '../layouts/DashboardLayout'
 import { About } from '../pages/About'
 import Login from '../pages/auth/login/Login'
 import SignUp from '../pages/auth/signup/SignUp'
-import { Home } from '../pages/home/Home'
+import Home from '../pages/home/Home'
 import { NotFound } from '../pages/NotFound'
 import { dashboardRoutes } from './dashboardRoutes'
 

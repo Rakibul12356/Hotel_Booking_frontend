@@ -1,31 +1,16 @@
-import { useQuery } from '@tanstack/react-query'
+import { HotelCard } from '../../components/HotelCard'
+import { hotels } from '../../data/hotels'
 
-async function fetchWelcomeMessage(): Promise<string> {
-  await new Promise((resolve) => setTimeout(resolve, 300))
-  return 'Welcome to your RealEState app.'
-}
-
-export function Home() {
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['welcome'],
-    queryFn: fetchWelcomeMessage,
-  })
-
+const Home = () => {
   return (
-    <section className="space-y-4">
-      <h1 className="text-3xl font-bold tracking-tight">Home</h1>
-      <p className="text-gray-600">
-        React Router v7, TanStack Query, Tailwind CSS, and Roboto are ready to
-        use.
-      </p>
-
-      <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
-        {isLoading && <p className="text-sm text-gray-500">Loading...</p>}
-        {isError && (
-          <p className="text-sm text-red-600">Failed to load welcome message.</p>
-        )}
-        {data && <p className="text-sm text-gray-800">{data}</p>}
+    <section className="px-2 md:px-6">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {hotels.map((hotel) => (
+          <HotelCard key={hotel.id} hotel={hotel} />
+        ))}
       </div>
     </section>
   )
 }
+
+export default Home
