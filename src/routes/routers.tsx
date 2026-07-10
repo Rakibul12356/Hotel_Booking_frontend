@@ -4,7 +4,9 @@ import { AuthGuard } from '../guards/AuthGuard'
 import { RoleGuard } from '../guards/RoleGuard'
 import { DashboardLayout } from '../layouts/DashboardLayout'
 import { About } from '../pages/About'
-import { Home } from '../pages/Home'
+import Login from '../pages/auth/login/Login'
+import SignUp from '../pages/auth/signup/SignUp'
+import { Home } from '../pages/home/Home'
 import { NotFound } from '../pages/NotFound'
 import { dashboardRoutes } from './dashboardRoutes'
 
@@ -15,6 +17,8 @@ export function AppRoutes() {
       <Route element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="about" element={<About />} />
+        <Route path="login" element={<Login />} />
+        <Route path="signup" element={<SignUp />} />
       </Route>
 
       {/* ✅ DASHBOARD — add your protected routes in dashboardRoutes.tsx */}

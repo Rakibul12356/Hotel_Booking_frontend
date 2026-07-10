@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { HiBars3, HiGlobeAlt, HiMagnifyingGlass, HiUser, HiXMark } from 'react-icons/hi2'
+import { HiBars3, HiMagnifyingGlass, HiUser, HiXMark } from 'react-icons/hi2'
 import { Link } from 'react-router-dom'
 import logo from '../assets/logo.svg'
 
