@@ -1,6 +1,8 @@
-import { type FormEvent, useEffect } from 'react'
+import { isAxiosError } from 'axios'
+import { type FormEvent, useEffect, useState } from 'react'
 import { HiXMark } from 'react-icons/hi2'
 import { Link, useNavigate } from 'react-router-dom'
+import { useLogin } from '../../../hooks/useLogin'
 
 const GoogleIcon = () => (
   <svg
@@ -30,8 +32,16 @@ const GoogleIcon = () => (
   </svg>
 )
 
+const DEMO_ACCOUNTS = {
+  user: { email: 'user@gmail.com', password: '123456' },
+  admin: { email: 'admin@gmail.com', password: 'admin12345' },
+}
+
 const Login = () => {
   const navigate = useNavigate()
+  const { mutate: login, isPending, error } = useLogin()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
   const handleClose = () => {
     navigate(-1)
@@ -45,6 +55,14 @@ const Login = () => {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    login({ email, password })
+  }
+
+  const handleQuickLogin = (type: 'user' | 'admin') => {
+    const account = DEMO_ACCOUNTS[type]
+    setEmail(account.email)
+    setPassword(account.password)
+    login(account)
   }
 
   useEffect(() => {
@@ -57,6 +75,12 @@ const Login = () => {
     document.addEventListener('keydown', handleEscape)
     return () => document.removeEventListener('keydown', handleEscape)
   }, [navigate])
+
+  const errorMessage = isAxiosError<{ message?: string }>(error)
+    ? error.response?.data?.message
+    : error
+      ? 'Login failed. Please try again.'
+      : undefined
 
   return (
     <div
@@ -85,6 +109,25 @@ const Login = () => {
           </p>
         </div>
 
+        <div className="mb-4 grid grid-cols-2 gap-3">
+          <button
+            type="button"
+            onClick={() => handleQuickLogin('user')}
+            disabled={isPending}
+            className="rounded-full border border-gray-300 py-2 text-sm font-medium transition hover:bg-gray-50 disabled:opacity-60"
+          >
+            User Login
+          </button>
+          <button
+            type="button"
+            onClick={() => handleQuickLogin('admin')}
+            disabled={isPending}
+            className="rounded-full border border-gray-300 py-2 text-sm font-medium transition hover:bg-gray-50 disabled:opacity-60"
+          >
+            Admin Login
+          </button>
+        </div>
+
         <div className="mb-4 space-y-4">
           <button
             type="button"
@@ -103,20 +146,31 @@ const Login = () => {
           <form className="space-y-4" onSubmit={handleSubmit}>
             <input
               type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
               placeholder="Email"
+              required
               className="w-full rounded-full border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-primary focus:outline-none"
             />
             <input
               type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
               placeholder="Password"
+              required
               className="w-full rounded-full border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-primary focus:outline-none"
             />
 
+            {errorMessage && (
+              <p className="text-center text-sm text-red-600">{errorMessage}</p>
+            )}
+
             <button
               type="submit"
-              className="w-full rounded-full bg-[#53B8AF] py-3 text-white transition hover:brightness-90"
+              disabled={isPending}
+              className="w-full rounded-full bg-[#53B8AF] py-3 text-white transition hover:brightness-90 disabled:opacity-60"
             >
-              Continue
+              {isPending ? 'Signing in...' : 'Continue'}
             </button>
           </form>
         </div>
