@@ -1,98 +1,120 @@
-import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import logo from "../assets/logo.svg";
+import { useEffect, useRef, useState } from 'react'
+import { HiBars3, HiGlobeAlt, HiMagnifyingGlass, HiUser, HiXMark } from 'react-icons/hi2'
+import { Link } from 'react-router-dom'
+import logo from '../assets/logo.svg'
 
 const menuItems = [
-  { label: "Login", to: "/login" },
-  { label: "Signup", to: "/signup" },
-  { label: "Help", to: "/help" },
-];
+  { label: 'Login', to: '/login' },
+  { label: 'Signup', to: '/signup' },
+  { label: 'Help', to: '/help' },
+]
 
- const Navbar = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
+const SearchBar = () => (
+  <div className="flex w-full items-center rounded-full border border-gray-200 bg-white px-2 py-1.5 shadow-sm transition-shadow hover:shadow-md">
+    <input
+      type="text"
+      placeholder="Where to?"
+      className="min-w-0 flex-1 bg-transparent px-3 text-sm placeholder:text-zinc-400 focus:outline-none md:text-base"
+    />
+    <button
+      type="button"
+      className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#53B8AF] text-white transition-all hover:brightness-90 md:h-9 md:w-9"
+      aria-label="Search"
+    >
+      <HiMagnifyingGlass className="h-4 w-4 md:h-5 md:w-5" />
+    </button>
+  </div>
+)
+
+const Navbar = () => {
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setMenuOpen(false);
+        setMenuOpen(false)
       }
-    };
+    }
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   return (
-    <nav className="mb-6  border-b border-gray-200 bg-white md:gap-8 md:px-8 lg:px-20 py-4">
-      <div className="container mx-auto grid grid-cols-2 items-center justify-between  py-3 md:flex ">
-        <div className="flex items-center">
-          <Link to="/">
-            <img src={logo} alt="Hotel Logo" className="h-8 w-auto" />
+    <nav className="mb-4 border-b border-gray-200 bg-white py-3 md:mb-6 md:py-4">
+      <div className="container mx-auto px-4 md:px-6 lg:px-8">
+        {/* Desktop: single row | Mobile: logo + actions */}
+        <div className="flex items-center justify-between gap-4 md:gap-6 lg:gap-8">
+          <Link to="/" className="shrink-0">
+            <img src={logo} alt="RealEState Logo" className="h-7 w-auto md:h-8" />
           </Link>
-        </div>
 
-        <div className="col-span-2 row-start-2 flex items-center border-0 px-2 shadow-sm transition-all hover:shadow-md md:rounded-full md:border border-gray-200" >
-          <div className="grow divide-x py-2 md:grid md:grid-cols-3 md:px-2 lg:grid-cols-7">
-            <input
-              type="text"
-              placeholder="Where to?"
-              className="bg-transparent px-3 placeholder:text-sm focus:outline-none lg:col-span-3"
-            />
+          {/* Desktop search — same line */}
+          <div className="hidden min-w-0 flex-1 md:block lg:max-w-2xl">
+            <SearchBar />
           </div>
 
-          <button
-            type="button"
-            className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#53B8AF] text-sm text-center text-white transition-all hover:brightness-90"
-            aria-label="Search"
-          >
-            <i className="fas fa-search text-white" />
-          </button>
+          <div className="relative flex shrink-0 items-center gap-2 md:gap-4" ref={menuRef}>
+            <button
+              type="button"
+              onClick={() => setSearchOpen((open) => !open)}
+              className="grid h-9 w-9 place-items-center rounded-full text-zinc-700 transition-colors hover:bg-zinc-100 md:hidden"
+              aria-label={searchOpen ? 'Close search' : 'Open search'}
+            >
+              {searchOpen ? (
+                <HiXMark className="h-5 w-5" />
+              ) : (
+                <HiMagnifyingGlass className="h-5 w-5" />
+              )}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setMenuOpen((open) => !open)}
+              className="flex items-center justify-center gap-2 rounded-full border border-zinc-300 bg-white px-3 py-1.5 text-zinc-800 transition-shadow hover:shadow-md md:gap-3 md:px-4 md:py-2"
+              aria-expanded={menuOpen}
+              aria-haspopup="true"
+            >
+              <HiBars3 className="h-4 w-4 md:h-5 md:w-5" />
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-zinc-600 text-white">
+                <HiUser className="h-3.5 w-3.5" />
+              </span>
+            </button>
+
+            {menuOpen && (
+              <div className="absolute top-full right-0 z-50 mt-2 w-48 rounded-md border border-gray-200 bg-white shadow-lg">
+                <ul>
+                  {menuItems.map((item) => (
+                    <li key={item.to}>
+                      <Link
+                        to={item.to}
+                        onClick={() => setMenuOpen(false)}
+                        className="block px-3 py-2.5 text-sm text-zinc-700 transition-all hover:bg-zinc-50 hover:pl-4 hover:text-zinc-900"
+                      >
+                        {item.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
 
+        {/* Mobile search — below on small screens */}
         <div
-          className="relative flex items-center justify-end space-x-4"
-          ref={menuRef}
+          className={[
+            'overflow-hidden transition-all duration-300 md:hidden',
+            searchOpen ? 'mt-3 max-h-20 opacity-100' : 'max-h-0 opacity-0',
+          ].join(' ')}
         >
-          <button type="button" aria-label="Change language">
-            <i className="fas fa-language text-xl text-zinc-700" />
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setMenuOpen((open) => !open)}
-            className="flex items-center justify-center gap-3 rounded-full border border-zinc-300 bg-white px-4 py-2 text-zinc-800 hover:shadow-md"
-            aria-expanded={menuOpen}
-            aria-haspopup="true"
-          >
-            <i className="fas fa-bars" />
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-zinc-600 text-xs text-white">
-              <i className="fas fa-user text-white" />
-            </span>
-          </button>
-
-          {/* Popup */}
-          {menuOpen && (
-            <div className="absolute top-full right-0 z-50 mt-2 max-h-fit w-48 max-w-48 rounded-md border bg-white shadow-sm">
-              <ul>
-                {menuItems.map((item) => (
-                  <li key={item.to}>
-                    <Link
-                      to={item.to}
-                      onClick={() => setMenuOpen(false)}
-                      className="block px-3 py-2 text-sm text-zinc-700 transition-all hover:bg-zinc-50 hover:pl-4 hover:text-zinc-800"
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+          <SearchBar />
         </div>
       </div>
     </nav>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar
