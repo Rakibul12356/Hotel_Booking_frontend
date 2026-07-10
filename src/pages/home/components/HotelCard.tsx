@@ -1,16 +1,7 @@
 import { PiBedBold } from 'react-icons/pi'
 import { HiStar } from 'react-icons/hi2'
 import { Link } from 'react-router-dom'
-
-export type Hotel = {
-  id: string
-  name: string
-  location: string
-  price: number
-  rating: number
-  roomsLeft: number
-  image: string
-}
+import type { Hotel } from '../../../types/hotel'
 
 type HotelCardProps = {
   hotel: Hotel

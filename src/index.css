@@ -10,3 +10,34 @@
     @apply  font-sans ;
   }
 }
+
+/* react-datepicker */
+.booking-datepicker .react-datepicker-wrapper {
+  width: 100%;
+}
+
+.booking-calendar {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  font-family: var(--font-sans);
+  overflow: hidden;
+}
+
+.booking-calendar .react-datepicker__header {
+  background-color: #fff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.booking-calendar .react-datepicker__day--selected,
+.booking-calendar .react-datepicker__day--keyboard-selected {
+  background-color: #53b8af;
+  color: #fff;
+}
+
+.booking-calendar .react-datepicker__day:hover {
+  background-color: #e6f5f3;
+}
+
+.booking-calendar .react-datepicker__day--disabled {
+  color: #d1d5db;
+}
