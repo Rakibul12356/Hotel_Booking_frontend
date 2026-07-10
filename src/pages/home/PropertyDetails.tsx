@@ -11,6 +11,7 @@ import { HiStar } from 'react-icons/hi2'
 import { useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { BookingDateRange } from '../../components/BookingDateRange'
+import { ReviewModal } from './components/ReviewModal'
 import type { HotelAmenity } from '../../types/hotel'
 import { getHotelById } from '../../data/hotels'
 
@@ -38,6 +39,7 @@ const PropertyDetails = () => {
   const [checkIn, setCheckIn] = useState<Date | null>(null)
   const [checkOut, setCheckOut] = useState<Date | null>(null)
   const [guests, setGuests] = useState(1)
+  const [isReviewOpen, setIsReviewOpen] = useState(false)
 
   if (!hotel) {
     return <Navigate to="/" replace />
@@ -81,7 +83,7 @@ const PropertyDetails = () => {
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <div className="lg:col-span-2">
-            <div className="mb-6 border-b pb-6">
+            <div className="mb-6 border-b border-gray-300 pb-6">
               <h2 className="mb-4 text-2xl font-semibold">
                 Entire villa hosted by {hotel.host}
               </h2>
@@ -164,7 +166,7 @@ const PropertyDetails = () => {
         </div>
       </div>
 
-      <div className="mx-auto max-w-7xl border-t px-4 py-12 md:px-6">
+      <div className="mx-auto max-w-7xl border-t border-gray-300 px-4 py-12 md:px-6">
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-wrap items-center gap-4">
             <h2 className="text-2xl font-semibold">Reviews</h2>
@@ -178,7 +180,8 @@ const PropertyDetails = () => {
 
           <button
             type="button"
-            className="rounded-lg border border-gray-900 px-4 py-2 hover:bg-gray-100"
+            onClick={() => setIsReviewOpen(true)}
+            className="rounded-lg border border-gray-400 px-4 py-2 hover:bg-gray-100"
           >
             Write a Review
           </button>
@@ -206,6 +209,11 @@ const PropertyDetails = () => {
           ))}
         </div>
       </div>
+
+      <ReviewModal
+        isOpen={isReviewOpen}
+        onClose={() => setIsReviewOpen(false)}
+      />
     </div>
   )
 }
